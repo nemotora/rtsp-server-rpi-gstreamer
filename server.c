@@ -2,15 +2,18 @@
 
 #include <gst/rtsp-server/rtsp-server.h>
 
-#define DEFAULT_RTSP_PORT "8554"
+#define DEFAULT_RTSP_PORT "554"
 
-static char* password = "wjJcr4DO0V5OzIrz20";
+static char* password = "123456";
 
 static char* port = (char *) DEFAULT_RTSP_PORT;
 
 static char* command = (char *) "(  \
-        rpicamsrc annotation-mode=frame-number \
-                  roi-x=0.0 roi-w=1.0 \
+        rpicamsrc annotation-mode=date+time \
+                  annotation-text-size=10 \
+		  annotation-text-bg-colour=16777215 \
+		  annotation-text-colour=12345 \
+  		  roi-x=0.0 roi-w=1.0 \
                   roi-y=0.0 roi-h=1.0 \
                   sharpness=100 \
                   contrast=100 \
@@ -19,14 +22,9 @@ static char* command = (char *) "(  \
                   preview=false \
                   bitrate=2000000 \
                   keyframe-interval=60 ! \
-          video/x-h264, framerate=30/1, profile=high, width=1640, height=1232 ! \
+          video/x-h264, framerate=20/1, profile=high, width=640, height=360 ! \
           h264parse ! \
-          rtph264pay name=pay0 pt=96 \
-        alsasrc device=hw:1 ! \
-          audioconvert ! \
-          audioresample ! \
-          alawenc ! \
-          rtppcmapay name=pay1 pt=8 )";
+          rtph264pay name=pay0 pt=96 )";
 
 int main (int argc, char *argv[]) {
   GMainLoop *loop;
